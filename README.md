@@ -2,7 +2,8 @@
 
 Un'utility Python per Windows che gestisce automaticamente il volume di un'applicazione target in base all'attività audio di un'applicazione trigger. Utilizza una TUI (Text User Interface) basata su Rich per visualizzare lo stato e i log in tempo reale.
 
-![Screenshot Placeholder - Ideally, add a screenshot of the TUI in action here]
+![Screenshot dell'interfaccia TUI](images/icon.png)
+![Screenshot dell'interfaccia TUI](images/screenshot.png)
 
 ## Caratteristiche Principali
 
@@ -13,7 +14,7 @@ Un'utility Python per Windows che gestisce automaticamente il volume di un'appli
     *   **Fissa:** Abbassa il volume di una percentuale fissa.
     *   **Dinamica:** Abbassa il volume in base a regole definite (es. più alto è il volume originale, maggiore è la riduzione).
 *   **Fading del Volume:** Transizioni graduali del volume (fade-in/fade-out) per un'esperienza più fluida.
-*   **TUI Interattiva:** Interfaccia utente nel terminale che mostra:
+*   **TUI:** Interfaccia utente nel terminale che mostra:
     *   Impostazioni correnti.
     *   Stato delle applicazioni trigger e target (trovate, attive).
     *   Volume corrente e originale dell'app target.
