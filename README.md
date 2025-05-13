@@ -20,8 +20,6 @@ Un'utility Python per Windows che gestisce automaticamente il volume di un'appli
     *   Log degli eventi in tempo reale.
 *   **Configurazione Flessibile:** Tutte le impostazioni sono gestite tramite un file `config.ini`.
 *   **Ripristino all'Uscita:** Tenta di ripristinare il volume originale dell'app target quando lo script viene chiuso (Ctrl+C).
-*   **Supporto per Eseguibile:** Può essere compilato in un file `.exe` per un facile utilizzo senza installare Python.
-
 ![Screenshot dell'interfaccia TUI](images/screenshot.jpg)
 
 ## Come Funziona
