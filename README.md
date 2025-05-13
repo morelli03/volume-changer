@@ -41,8 +41,8 @@ Lo script esegue il polling delle sessioni audio attive su Windows a intervalli 
 
 ## Requisiti
 
-### Per eseguire lo script Python (`.py`):
-*   Windows (testato su Windows 10/11)
+### Per eseguire lo script Python:
+*   Windows (testato su Windows 11, python 3.10.6)
 *   Python 3.7+
 *   Pip (Python package installer)
 *   Le librerie Python elencate in `requirements.txt`:
@@ -51,27 +51,16 @@ Lo script esegue il polling delle sessioni audio attive su Windows a intervalli 
     *   `rich`: Per la TUI avanzata.
     *   `comtypes`: Dipendenza di `pycaw`.
 
-### Per eseguire il file `.exe` precompilato:
-*   Windows (testato su Windows 10/11)
-*   Nessun requisito aggiuntivo (Python non necessario).
-
 ## Installazione e Utilizzo
 
 ### Opzione 1: Utilizzare lo script Python (Consigliato per Sviluppatori/Utenti Avanzati)
 
 1.  **Clona il repository o scarica i file:**
     ```bash
-    git clone https://github.com/TUO_USERNAME/NOME_REPOSITORY.git
-    cd NOME_REPOSITORY
+    git clone https://github.com/morelli03/volume-changer.git
+    cd volume-changer
     ```
     Oppure scarica lo ZIP ed estrailo.
-
-2.  **Crea e attiva un ambiente virtuale (consigliato):**
-    ```bash
-    python -m venv venv
-    venv\Scripts\activate  # Su Windows
-    # source venv/bin/activate # Su Linux/macOS (sebbene lo script sia per Windows)
-    ```
 
 3.  **Installa le dipendenze:**
     ```bash
@@ -79,8 +68,7 @@ Lo script esegue il polling delle sessioni audio attive su Windows a intervalli 
     ```
 
 4.  **Configura `config.ini`:**
-    *   Copia `config_example.ini` in `config.ini` (se non già presente) o modifica `config.ini` direttamente.
-    *   Apri `config.ini` con un editor di testo e modifica i valori secondo le tue esigenze (vedi la sezione "Configurazione" sotto). **Assicurati che i nomi delle applicazioni (`TriggerAppName`, `TargetAppName`) corrispondano esattamente ai nomi dei processi eseguibili (es. `discord.exe`, `spotify.exe`).**
+    *   Apri `config.ini` con un editor di testo e modifica i valori secondo le tue esigenze (vedi la sezione "Configurazione" sotto). **Assicurati che i nomi delle applicazioni (`TriggerAppName`, `TargetAppName`) corrispondano esattamente ai nomi dei processi eseguibili (es. `Discord.exe`, `Spotify.exe`).**
 
 5.  **Esegui lo script:**
     ```bash
