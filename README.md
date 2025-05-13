@@ -52,7 +52,17 @@ Lo script esegue il polling delle sessioni audio attive su Windows a intervalli 
 
 ## Installazione e Utilizzo
 
-### Opzione 1: Utilizzare lo script Python
+### Opzione 1: Utilizzare il file `.exe` precompilato
+
+1.  **Scarica il file `vc_setup.exe`** dalla sezione [**Releases**](https://github.com/morelli03/volume-changer/releases/) di questo repository.
+2.  **Esegui `vc_setup.exe`**. Installa il programma.
+
+    **Per uscire:** Premi `Ctrl+C` nella finestra del terminale o chiudi la finestra.
+
+    **Nota:** Alcuni software antivirus potrebbero segnalare il file `.exe` come potenziale minaccia (falso positivo) perché non è firmato digitalmente.
+
+
+### Opzione 2: Utilizzare lo script Python
 
 1.  **Clona il repository o scarica i file:**
     ```bash
@@ -66,23 +76,17 @@ Lo script esegue il polling delle sessioni audio attive su Windows a intervalli 
     pip install -r requirements.txt
     ```
 
-4.  **Configura `config.ini`:**
-    *   Apri `config.ini` con un editor di testo e modifica i valori secondo le tue esigenze (vedi la sezione "Configurazione" sotto). **Assicurati che i nomi delle applicazioni (`TriggerAppName`, `TargetAppName`) corrispondano esattamente ai nomi dei processi eseguibili (es. `Discord.exe`, `Spotify.exe`).**
-
-5.  **Esegui lo script:**
+4.  **Esegui lo script:**
     ```bash
+    cd src
     python volume_manager_1.1.py
     ```
+    
+5.  **(Opzionale) Configura `config.ini`:**
+    *   Di base vc è configurato per usare come trigger e target Discord e Spotify, in base alle necessità si possono cambiare a piacimento.
+    *   Apri `config.ini` con un editor di testo e modifica i valori secondo le tue esigenze (vedi la sezione "Configurazione" sotto). **Assicurati che i nomi delle applicazioni (`TriggerAppName`, `TargetAppName`) corrispondano esattamente ai nomi dei processi eseguibili (es. `Discord.exe`, `Spotify.exe`).**
 
-6.  **Per uscire:** Premi `Ctrl+C` nella finestra del terminale dove lo script è in esecuzione.
-
-### Opzione 2: Utilizzare il file `.exe` precompilato
-
-1.  **Scarica il file `vc_setup.exe`** dalla sezione [**Releases**](https://github.com/morelli03/volume-changer/releases/) di questo repository.
-2.  **Esegui `vc_setup.exe`**. Installa il programma. 
-**Per uscire:** Premi `Ctrl+C` nella finestra del terminale o chiudi la finestra.
-
-    **Nota:** Alcuni software antivirus potrebbero segnalare il file `.exe` come potenziale minaccia (falso positivo) perché non è firmato digitalmente.
+7.  **Per uscire:** Premi `Ctrl+C` nella finestra del terminale dove lo script è in esecuzione.
 
 ## Configurazione (`config.ini`)
 
