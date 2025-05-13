@@ -92,22 +92,23 @@ Il file `config.ini` permette di personalizzare il comportamento dello script. A
 [General]
 ; Nome dell'eseguibile dell'applicazione che, quando attiva, farà abbassare il volume dell'app target
 ; Esempi: discord.exe, msteams.exe, zoom.exe
-TriggerAppName = discord.exe
+TriggerAppName = Discord.exe
 
 ; Nome dell'eseguibile dell'applicazione il cui volume verrà controllato
 ; Esempi: spotify.exe, vlc.exe, chrome.exe (se vuoi abbassare il browser per i giochi)
-TargetAppName = spotify.exe
+TargetAppName = Spotify.exe
 
-; Intervallo in secondi tra i controlli del volume
-PollingIntervalSeconds = 0.5
+; Intervallo in secondi tra i controlli del volume, più è basso, più sarà responsivo ad abbassare volume
+; Se troppo basso aumenta l'utilizzo della cpu
+PollingIntervalSeconds = 0.2
 
 ; Tempo in secondi che l'app trigger deve rimanere silenziosa prima di ripristinare il volume dell'app target
-DebounceTimeSeconds = 2.0
+DebounceTimeSeconds = 1.5
 
 [VolumeControl]
 ; Soglia di volume (da 0.0 a 1.0) dell'app trigger per considerarla "attiva"
 ; 0.1 = 10% di picco audio
-TriggerVolumeThreshold = 0.05
+TriggerVolumeThreshold = 0.1
 
 ; Se True, usa le regole dinamiche. Se False, usa FixedReductionAmountPoints.
 UseDynamicReduction = True
@@ -115,7 +116,7 @@ UseDynamicReduction = True
 ; Valore fisso (da 0.0 a 1.0) di cui ridurre il volume dell'app target
 ; Es: 0.3 = riduce il volume di 30 punti percentuali (es. da 70% a 40%)
 ; Usato solo se UseDynamicReduction = False
-FixedReductionAmountPoints = 0.30
+FixedReductionAmountPoints = 0.20
 
 ; Volume minimo (da 0.0 a 1.0) a cui l'app target può essere ridotta
 ; Es: 0.05 = il volume non scenderà mai sotto il 5%
@@ -139,18 +140,17 @@ Rules = 0.95:0.80, 0.85:0.65, 0.75:0.45, 0.50:0.35, 0.25:0.15, 0.10001:0.10, 0.0
 
 [Fading]
 ; Durata in secondi per l'effetto di fade-out (abbassamento volume)
-FadeOutDurationSeconds = 0.3
+FadeOutDurationSeconds = 0.15
 ; Numero di step per il fade-out
-FadeOutSteps = 10
+FadeOutSteps = 15
 
 ; Durata in secondi per l'effetto di fade-in (ripristino volume)
-FadeInDurationSeconds = 0.5
+FadeInDurationSeconds = 0.8
 ; Numero di step per il fade-in
-FadeInSteps = 15
+FadeInSteps = 25
 
-; Durata in secondi per l'effetto di fade-in quando si esce dallo script (Ctrl+C)
-; Se <=0, usa metà della FadeInDurationSeconds
-ExitFadeDurationSeconds = 0.0 ; Usare 0.0 per il fallback automatico, oppure un valore tipo 0.1
+; Durata del fade out all'uscita. Se 0.0 o negativo, verrà calcolato come max(0.1, FadeInDurationSeconds / 2).
+ExitFadeDurationSeconds = 0.0 
 ; Numero di step per il fade-in all'uscita
 ; Se <=0, usa FadeInSteps
 ExitFadeSteps = 0 ; Usare 0 per il fallback automatico, oppure un valore tipo 5
