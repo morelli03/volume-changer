@@ -1,9 +1,8 @@
 # Automatic Volume Manager
+![Screenshot dell'interfaccia TUI](images/icon.png)
 
 Un'utility Python per Windows che gestisce automaticamente il volume di un'applicazione target in base all'attività audio di un'applicazione trigger. Utilizza una TUI (Text User Interface) basata su Rich per visualizzare lo stato e i log in tempo reale.
 
-![Screenshot dell'interfaccia TUI](images/icon.png)
-![Screenshot dell'interfaccia TUI](images/screenshot.png)
 
 ## Caratteristiche Principali
 
@@ -22,6 +21,8 @@ Un'utility Python per Windows che gestisce automaticamente il volume di un'appli
 *   **Configurazione Flessibile:** Tutte le impostazioni sono gestite tramite un file `config.ini`.
 *   **Ripristino all'Uscita:** Tenta di ripristinare il volume originale dell'app target quando lo script viene chiuso (Ctrl+C).
 *   **Supporto per Eseguibile:** Può essere compilato in un file `.exe` per un facile utilizzo senza installare Python.
+
+![Screenshot dell'interfaccia TUI](images/screenshot.jpg)
 
 ## Come Funziona
 
@@ -53,7 +54,7 @@ Lo script esegue il polling delle sessioni audio attive su Windows a intervalli 
 
 ## Installazione e Utilizzo
 
-### Opzione 1: Utilizzare lo script Python (Consigliato per Sviluppatori/Utenti Avanzati)
+### Opzione 1: Utilizzare lo script Python
 
 1.  **Clona il repository o scarica i file:**
     ```bash
@@ -79,13 +80,11 @@ Lo script esegue il polling delle sessioni audio attive su Windows a intervalli 
 
 ### Opzione 2: Utilizzare il file `.exe` precompilato
 
-1.  **Scarica il file `volume_manager.exe`** dalla sezione [**Releases**](https://github.com/TUO_USERNAME/NOME_REPOSITORY/releases) di questo repository.
-2.  **Scarica o crea il file `config.ini`**. Assicurati che sia nella stessa cartella del file `.exe`.
-3.  **Modifica `config.ini`** come descritto nella sezione "Configurazione".
-4.  **Esegui `volume_manager.exe`**. Si aprirà una finestra del terminale che mostrerà la TUI.
-5.  **Per uscire:** Premi `Ctrl+C` nella finestra del terminale o chiudi la finestra.
+1.  **Scarica il file `vc_setup.exe`** dalla sezione [**Releases**](https://github.com/morelli03/volume-changer/releases/) di questo repository.
+2.  **Esegui `vc_setup.exe`**. Installa il programma. 
+**Per uscire:** Premi `Ctrl+C` nella finestra del terminale o chiudi la finestra.
 
-    **Nota:** Alcuni software antivirus potrebbero segnalare il file `.exe` come potenziale minaccia (falso positivo) perché non è firmato digitalmente. Se compilato da una fonte fidata (come te stesso o questo repository), dovrebbe essere sicuro.
+    **Nota:** Alcuni software antivirus potrebbero segnalare il file `.exe` come potenziale minaccia (falso positivo) perché non è firmato digitalmente.
 
 ## Configurazione (`config.ini`)
 
@@ -128,14 +127,17 @@ MinimumVolumeAfterReduction = 0.05
 VolumeFloatTolerance = 0.001
 
 [DynamicReductionRules]
-; Regole per la riduzione dinamica. Formato: "soglia_originale:punti_riduzione, altra_soglia:altri_punti"
-; Le soglie sono volumi originali dell'app target (0.0-1.0). I punti sono quanto ridurre (0.0-1.0).
-; Lo script applicherà la prima regola (dalla più alta alla più bassa) la cui soglia è soddisfatta.
-; Esempio: se il volume originale è 80% (0.8), userà la regola 0.7:0.5 riducendo di 50 punti.
-; Se il volume originale è 60% (0.6), userà la regola 0.5:0.35 riducendo di 35 punti.
-; Se il volume originale è 20% (0.2), nessuna regola si applica e la riduzione è 0 (o la FixedReduction se Dynamic non si applica)
-; Lasciare vuoto per non usare regole specifiche e fare affidamento sulla FixedReduction se UseDynamicReduction è True ma non ci sono regole applicabili.
-Rules = 0.7:0.5, 0.5:0.35, 0.3:0.2
+; Usato solo se UseDynamicReduction è True.
+; Formato: "livello_soglia_originale:ammontare_riduzione, ..."
+; - livello_soglia_originale: Se il volume originale del target è >= a questo valore, la regola si applica.
+; - ammontare_riduzione: Valore da sottrarre al volume originale (es. 0.80 per ridurre di 80 punti percentuali).
+; Le regole vengono valutate nell'ordine in cui sono scritte. La PRIMA regola che corrisponde viene utilizzata.
+; Quindi, elenca le regole con soglie più alte per prime.
+; Il volume finale sarà sempre limitato da MinimumVolumeAfterReduction (sezione VolumeControl).
+;
+; La regola '0.10001:0.10' è pensata per volumi originali appena sopra (MinimumVolumeAfterReduction + 0.05). Se MinimumVolumeAfterReduction è 0.05, allora 0.05 + 0.05 = 0.10. La soglia 0.10001 cattura i volumi > 0.10.
+; La regola '0.0:0.05' è un fallback per volumi molto bassi, se nessuna regola precedente corrisponde.
+Rules = 0.95:0.80, 0.85:0.65, 0.75:0.45, 0.50:0.35, 0.25:0.15, 0.10001:0.10, 0.0:0.05
 
 [Fading]
 ; Durata in secondi per l'effetto di fade-out (abbassamento volume)
@@ -162,37 +164,10 @@ RefreshRate = 4
 MaxLogMessages = 100
 ```
 
-## Compilare in un `.exe` (Opzionale)
-
-Se vuoi compilare lo script in un file `.exe` autonomo, puoi usare [PyInstaller](https://pyinstaller.org/):
-
-1.  **Installa PyInstaller** (se non l'hai già fatto, preferibilmente nel tuo ambiente virtuale):
-    ```bash
-    pip install pyinstaller
-    ```
-
-2.  **Esegui PyInstaller dalla directory principale del progetto:**
-    ```bash
-    pyinstaller --onefile --windowed --name VolumeManager --icon=your_icon.ico volume_manager_1.1.py
-    ```
-    *   `--onefile`: Crea un singolo file eseguibile.
-    *   `--windowed`: Su Windows, previene l'apertura di una console aggiuntiva se la tua app è GUI (per questo script che usa Rich TUI, potresti preferire omettere `--windowed` o usare `--console` che è il default, per assicurarti che la TUI sia visibile). *Per questo script specifico, è meglio NON usare `--windowed` perché la TUI è basata su console.*
-    *   `--name VolumeManager`: Specifica il nome del file `.exe` risultante.
-    *   `--icon=your_icon.ico`: (Opzionale) Aggiunge un'icona al tuo `.exe`.
-    *   `volume_manager_1.1.py`: Il tuo script principale.
-
-    Un comando più semplice potrebbe essere:
-    ```bash
-    pyinstaller --onefile --name VolumeManager volume_manager_1.1.py
-    ```
-
-3.  Il file `.exe` si troverà nella cartella `dist` creata da PyInstaller.
-4.  **Ricorda:** Il file `config.ini` deve essere posizionato nella stessa directory dell'`.exe` per essere letto correttamente.
-
 ## Troubleshooting
 
 *   **Applicazione Trigger/Target non trovata:**
-    *   Assicurati che il nome dell'applicazione in `config.ini` (`TriggerAppName`, `TargetAppName`) corrisponda **esattamente** al nome del processo eseguibile (es. `spotify.exe`, non "Spotify Music"). Puoi trovare i nomi dei processi nel Task Manager (scheda Dettagli).
+    *   Assicurati che il nome dell'applicazione in `config.ini` (`TriggerAppName`, `TargetAppName`) corrisponda **esattamente** al nome del processo eseguibile (es. `Spotify.exe`, non "Spotify Music"). Puoi trovare i nomi dei processi nel Task Manager (scheda Dettagli).
     *   Assicurati che le applicazioni siano in esecuzione e stiano producendo/ricevendo audio.
 *   **Il volume non cambia:**
     *   Verifica `TriggerVolumeThreshold`. Se è troppo alto, l'app trigger potrebbe non essere mai considerata "attiva". Se troppo basso, potrebbe essere sempre attiva.
@@ -205,7 +180,4 @@ Se vuoi compilare lo script in un file `.exe` autonomo, puoi usare [PyInstaller]
 I contributi sono benvenuti! Sentiti libero di aprire una issue per segnalare bug o suggerire miglioramenti, o un pull request con le tue modifiche.
 
 ## Licenza
-Questo progetto è rilasciato sotto la Licenza MIT. Vedi il file `LICENSE` per maggiori dettagli (o aggiungi qui il testo della licenza MIT).
-
----
-*(Aggiungi un file LICENSE con la licenza MIT se lo desideri)*
+Questo progetto è rilasciato sotto la Licenza GPLv3. Vedi il file `LICENSE` per maggiori dettagli.
