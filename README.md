@@ -1,4 +1,4 @@
-# Automatic Volume Manager
+# Automatic Volume Changer
 ![Screenshot dell'interfaccia TUI](images/icon.png)
 
 Un'utility Python per Windows che gestisce automaticamente il volume di un'applicazione target in base all'attività audio di un'applicazione trigger. Utilizza una TUI (Text User Interface) basata su Rich per visualizzare lo stato e i log in tempo reale.
